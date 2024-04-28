@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import br.com.desafiopicpay.DTO.UsuarioDTO;
+
 
 
 @Entity(name="usuarios")
@@ -34,13 +36,26 @@ public class Usuario {
 	
 	private BigDecimal saldo;
 	
+	private String password;
+	
 	@Enumerated(EnumType.STRING)
 	private UserType tipoUsuario;
-	
-	
 
+	
+	public Usuario(UsuarioDTO usuario) {
+		this.primeiroNome = usuario.getPrimeiroNome();
+		this.sobreNome = usuario.getSobreNome();
+		this.cpf = usuario.getCpf();
+		this.email = usuario.getEmail();
+		this.saldo = usuario.getSaldo();
+		this.password = usuario.getPassword();
+		this.tipoUsuario = usuario.getTipoUsuario();
+	}
+	
+	
+	
 	public Usuario(Long id, String primeiroNome, String sobreNome, String cpf, String email, BigDecimal saldo,
-			UserType tipoUsuario) {
+			String password, UserType tipoUsuario) {
 		super();
 		this.id = id;
 		this.primeiroNome = primeiroNome;
@@ -48,8 +63,14 @@ public class Usuario {
 		this.cpf = cpf;
 		this.email = email;
 		this.saldo = saldo;
+		this.password = password;
 		this.tipoUsuario = tipoUsuario;
 	}
+
+	public Usuario() {
+        
+    }
+
 
 	public Long getId() {
 		return id;
@@ -99,6 +120,14 @@ public class Usuario {
 		this.saldo = saldo;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public UserType getTipoUsuario() {
 		return tipoUsuario;
 	}
@@ -123,8 +152,5 @@ public class Usuario {
 		Usuario other = (Usuario) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
 
 }
