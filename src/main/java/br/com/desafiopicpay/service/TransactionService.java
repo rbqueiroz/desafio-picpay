@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class TransactionService {
 	
 	@Autowired
 	private NotificationService notificationService;
+	
+	@Value("${status.transaction}")
+    private String statusTransaction;
 	
 	
 	public Transaction createTransaction(TransactionDTO transaction) throws Exception {
@@ -66,7 +70,7 @@ public class TransactionService {
 	}
 	
 	public boolean authorizeTransaction(Usuario remetente, BigDecimal valor) {
-		ResponseEntity<Map> authorizationResponse  = restTemplate.getForEntity("https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc", Map.class);
+		ResponseEntity<Map> authorizationResponse  = restTemplate.getForEntity(statusTransaction, Map.class);
 		
 		if(authorizationResponse.getStatusCode() == HttpStatus.OK) {
 			String message  = (String) authorizationResponse.getBody().get("message");
